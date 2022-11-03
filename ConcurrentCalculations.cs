@@ -20,9 +20,11 @@ public class Concurrency
             taskList[i] = (new Task(() => AddToOneHundredMillion(start, end)));
             ulong s = AddToOneHundredMillion(start, end);
             TotalSum += s;
-            start += 100000000;
-            end += 100000000;
+            start += 100000000; // add 100 million
+            end += 100000000; // add 100 million
         }
+
+        // sum in increments of 100 million 100 times concurrently up to 10 billion
         Stopwatch sw = Stopwatch.StartNew();
         foreach (Task t in taskList)
         {
