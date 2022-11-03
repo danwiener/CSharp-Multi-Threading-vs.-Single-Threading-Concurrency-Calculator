@@ -77,11 +77,11 @@ public class Concurrency
     static void Main(string[] args)
     {
         Concurrency c = new();
-        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:03.0661120      Total sum: 13106511857580896768
+        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.7342673     Total sum:  5.000000000006786E+19
 
-        //c.AddToOneHundredMillion(1, 100000000); // Time elapsed: 00:00:00.1756455
+        //c.AddToOneHundredMillion(1, 100000000); // Time elapsed: 00:00:00.2705015
 
-        c.SumTo10Billion(); // Time elapsed: 00:00:17.0516249                 Total Sum: 13106511857580896768
+        //c.SumTo10Billion(); // Time elapsed: 00:00:27.5756065                   Total sum:  5.000000000006786E+19
 
 
     } // end Main
