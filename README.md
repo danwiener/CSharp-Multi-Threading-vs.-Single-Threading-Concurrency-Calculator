@@ -1,6 +1,6 @@
 # ConcurrentCalculations
 
-This application makes use of the asynchronous built-in .NET class Task to test calculation time using concurrency. 
+This application makes use of the asynchronous built-in .NET class Task to evaluate calculation time using concurrency. 
 
 It contains three methods.
 
