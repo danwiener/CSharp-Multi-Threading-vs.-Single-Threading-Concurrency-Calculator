@@ -13,16 +13,16 @@ public class Concurrency
     {
         Task[] taskList = new Task[100];
 
-        double start = 1;
-        double end = 100000000;
+        double start = 1.0;
+        double end = 100000000.0;
 
         for (int i = 0; i < 100; i++)
         { 
             taskList[i] = (new Task(() => AddToOneHundredMillion(start, end)));
             double s = AddToOneHundredMillion(start, end);
             TotalSum += s;
-            start += 100000000; // add 100 million
-            end += 100000000; // add 100 million
+            start += 100000000.0; // add 100 million
+            end += 100000000.0; // add 100 million
         }
 
         // sum in increments of 100 million 100 times concurrently up to 10 billion
@@ -44,7 +44,7 @@ public class Concurrency
     public double AddToOneHundredMillion(double start, double end)
     {
         //Stopwatch sw = Stopwatch.StartNew();
-        double sum = 0;
+        double sum = 0.0;
         for (double i = start; i <= end; i++)
         {
             sum += i;
@@ -60,8 +60,8 @@ public class Concurrency
     public void SumTo10Billion()
     {
         Stopwatch sw = Stopwatch.StartNew();
-        double sum = 0;
-        for (double i = 1; i <= 10000000000; i++)
+        double sum = 0.0;
+        for (double i = 1.0; i <= 10000000000.0; i++)
         {
             sum += i;
         }
