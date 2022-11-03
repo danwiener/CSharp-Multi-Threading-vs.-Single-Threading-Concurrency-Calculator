@@ -35,7 +35,7 @@ public class Concurrency
 
         Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
         Console.WriteLine("Total sum: " + TotalSum);
-    }
+    } // end method
 
     // This method will add the sum of each number from 0 to 100 million
     public ulong AddToOneHundredMillion(ulong start, ulong end)
@@ -51,7 +51,7 @@ public class Concurrency
         //Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
 
         return sum;
-    }
+    } // end method 
 
     // This method syncrhonously sums to 10 billion.
     public void SumTo10Billion()
@@ -69,7 +69,7 @@ public class Concurrency
 
         TotalSum = sum;
         Console.WriteLine("Total Sum: " + TotalSum);
-    }
+    } // end method
 
     static void Main(string[] args)
     {
@@ -79,5 +79,5 @@ public class Concurrency
         //c.AddToOneHundredMillion(1, 100000000); // Time elapsed: 00:00:00.1756455
 
         //c.SumTo10Billion(); // Time elapsed: 00:00:17.0516249                 Total Sum: 13106511857580896768
-    }
-}
+    } // end Main
+} // end class
