@@ -7,7 +7,7 @@ public class Concurrency
 
     public ulong TotalSum { get;set; }
 
-    // This method will concurrently run 100 threads summing up to 100 million
+    // This method will concurrently run 100 threads summing 100 million numbers
     public async void AddToTenBillionConcurrently()
     {
         Task[] taskList = new Task[100];
