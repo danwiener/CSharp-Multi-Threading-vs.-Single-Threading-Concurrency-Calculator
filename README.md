@@ -13,9 +13,9 @@ but will modify each method so that the first sums from 1 to 100 million, the ne
 and so forth, up to 10 billion.
 
 Results:
-Synchronous summing to 10 billion: Time elapsed: 00:00:17.0516249  Total Sum: 13106511857580896768
+Synchronous summing to 10 billion: Time elapsed: 00:00:17.0516249  Total sum:  5.000000000006786E+19
 
-Synchronous summing to 100 million : Time elapsed: 00:00:00.1756455
+Synchronous summing to 100 million : Time elapsed: 00:00:00.2705015
 
-Asynchronous summing to 10 billion: Time elapsed: 00:00:03.0661120 Total sum: 13106511857580896768
+Asynchronous summing to 10 billion: Time elapsed: 00:00:04.7342673 Total sum:  5.000000000006786E+19
 
