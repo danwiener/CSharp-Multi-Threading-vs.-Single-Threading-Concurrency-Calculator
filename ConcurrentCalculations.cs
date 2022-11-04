@@ -4,35 +4,41 @@ using System.Runtime.CompilerServices;
 
 public class Concurrency
 {
+    // Data Fields
+    private const double TenMillion = 10000000;
+    private const double OneBillion = 1000000000;
+
+    // Properties
     public TimeSpan ConcurrentTimeElapsed { get; set; }
 
     public double TotalSum { get;set; }
 
-    // This method will concurrently run 100 threads summing 100 million numbers
-    public async void AddToTenBillionConcurrently()
+    // This method will concurrently run 100 threads summing 10 million numbers
+    public async void AddToOneBillionConcurrently()
     {
-        Task[] taskList = new Task[100];
+        Task<double>[] taskList = new Task<double>[100];
+        double[] results = new double[taskList.Length];
 
-        double start = 1.0;
-        double end = 100000000.0;
-
-        for (int i = 0; i < 100; i++)
-        { 
-            taskList[i] = (new Task(() => AddToOneHundredMillion(start, end)));
-            double s = AddToOneHundredMillion(start, end);
-            TotalSum += s;
-            start += 100000000.0; // add 100 million
-            end += 100000000.0; // add 100 million
-        }
-
-        // sum in increments of 100 million 100 times concurrently up to 10 billion
+        double start = 1;
+        double end = TenMillion;
         Stopwatch sw = Stopwatch.StartNew();
-        foreach (Task t in taskList)
+        for (int i = 0; i < 100; i++)
         {
-            t.Start();
+            int index = i;
+            taskList[index] = Task<double>.Factory.StartNew(() => AddToTenMillion(start, end));
+
+            results[i] = taskList[index].Result;
+            
+            start += TenMillion; // add 10 million
+            end += TenMillion; // add 10 million
         }
         Task.WaitAll(taskList);
+        TotalSum += results.Sum();
         sw.Stop();
+        // sum in increments of 10 million 100 times concurrently up to 10 billion
+
+
+
 
         ConcurrentTimeElapsed += sw.Elapsed;
 
@@ -40,15 +46,15 @@ public class Concurrency
         Console.WriteLine("Total sum: " + TotalSum);
     } // end method
 
-    // This method will add the sum of each number from 0 to 100 million
-    public double AddToOneHundredMillion(double start, double end)
+    // This method will add the sum of each number from 0 to 10 million
+    public double AddToTenMillion(double start, double end)
     {
         //Stopwatch sw = Stopwatch.StartNew();
-        double sum = 0.0;
-        for (double i = start; i <= end; i++)
-        {
-            sum += i;
-        }
+        double sum = 0;
+            for (double i = start; i <= end; i++)
+            {
+                sum += i;
+            }
 
         //ConcurrentTimeElapsed += sw.Elapsed;
         //Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
@@ -56,12 +62,12 @@ public class Concurrency
         return sum;
     } // end method 
 
-    // This method syncrhonously sums to 10 billion.
-    public void SumTo10Billion()
+    // This method syncrhonously sums to 1 billion.
+    public void SumToOneBillion()
     {
         Stopwatch sw = Stopwatch.StartNew();
-        double sum = 0.0;
-        for (double i = 1.0; i <= 10000000000.0; i++)
+        double sum = 0;
+        for (double i = 1; i <= OneBillion; i++)
         {
             sum += i;
         }
@@ -77,11 +83,11 @@ public class Concurrency
     static void Main(string[] args)
     {
         Concurrency c = new();
-        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.7342673     Total sum:  5.000000000006786E+19
+        c.AddToOneBillionConcurrently(); // Time elapsed: 00:00:02.7011199    Total sum:  Total sum: 5.0000000049746195E+17
 
-        //c.AddToOneHundredMillion(1, 100000000); // Time elapsed: 00:00:00.2705015
+        //c.AddToTenMillion(1, TenMillion); // Time elapsed: 00:00:00.2705015
 
-        //c.SumTo10Billion(); // Time elapsed: 00:00:27.5756065                   Total sum:  5.000000000006786E+19
+        //c.SumToOneBillion(); // Time elapsed: 00:00:02.6888783                 Total Sum: 5.00000000067109E+17
 
 
     } // end Main
