@@ -1,37 +1,34 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 //Created by Henrik Wiener : 11/3/2023
 public class Concurrency
 {
     // Data Fields
-    private const ulong OneHundredMillion = 10_000_000;
-    private const ulong TenBillion = 1_000_000_000;
+    private const double OneHundredMillion = 100_000_000;
+    private const double TenBillion = 10_000_000_000;
 
-    private ulong _sum; // sum of values
+    private double _sum; // sum of values
 
     public TimeSpan ConcurrentTimeElapsed { get; set; }
 
-    // This method will concurrently run 100 threads each summing 10 million numbers up to 1 billion
-    public async void AddToOneBillionConcurrently()
+    // This method will concurrently run 100 threads each summing 100 million numbers up to 10 billion
+    public async void AddToTenBillionConcurrently()
     {
         Thread[] taskList = new Thread[100];
-        ulong[] results = new ulong[taskList.Length];
 
-        ulong start = 1;
-        ulong end = OneHundredMillion;
+        double start = 1;
+        double end = OneHundredMillion;
 
         Stopwatch sw = Stopwatch.StartNew();
 
-        // Sum in increments of 10 million 100 times concurrently up to 1 billion
-        for (ulong i = 0; i < 100; i++)
+        // Sum in increments of 100 million 100 times concurrently up to 10 billion
+        for (double i = 0; i < 100; i++)
         {
-            ulong index = i;
-            taskList[index] = new Thread(() => AddToTenMillion(start, end));
+            int index = (int)i;
+            taskList[index] = new Thread(() => AddToOneHundredMillion(start, end));
             taskList[index].Name = $"Thread({index})";
-            taskList[index].Start();
-
+            Task task = Task.Factory.StartNew(() => taskList[index].Start());
+            task.Wait();
 
             start += OneHundredMillion; // add 10 million
             end += OneHundredMillion; // add 10 million
@@ -45,35 +42,38 @@ public class Concurrency
 
         //_sum = results.Sum();
         ConcurrentTimeElapsed += sw.Elapsed;
- 
+
         Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
         Console.WriteLine("Total sum: " + _sum);
     } // end method
-
-    // This method will add the sum of each number from 0 to 10 million
+    // This method will add the sum of each number from 0 to 100 million
     private object myLock = new object();
-    public void AddToTenMillion(ulong start, ulong end)
+    public void AddToOneHundredMillion(double start, double end)
     {
-        ulong sum = 0;
-        //Stopwatch sw = Stopwatch.StartNew();
-        for (ulong i = start; i <= end; i++)
+        double sum = 0;
+        Stopwatch sw = Stopwatch.StartNew();
+        for (double i = start; i <= end; i++)
         {
             sum += i;
         }
-        //sw.Stop();
-        //ConcurrentTimeElapsed += sw.Elapsed;
-        //Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
+        sw.Stop();
+        ConcurrentTimeElapsed += sw.Elapsed;
+        Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
 
-        Interlocked.Add(ref _sum, sum);
+        lock (myLock)
+        {
+            _sum += sum;
+        }
+        //Interlocked.Add(ref _sum, sum);
     } // end method 
 
-    // This method syncrhonously sums to 1 billion.
-    public void SumToOneBillion()
+    // This method syncrhonously sums to 10 billion.
+    public void SumToTenBillion()
     {
-        ulong sum = 0;
+        double sum = 0;
         Stopwatch sw = Stopwatch.StartNew();
-        //ulong sum = (TenBillion * (TenBillion + 1)) / 2;     // Using Gauss Summation
-        for (ulong i = 1; i <= TenBillion; i++)
+        //double sum = (TenBillion * (TenBillion + 1)) / 2;     // Using Gauss Summation
+        for (double i = 1; i <= TenBillion; i++)
         {
             sum += i;
         }
@@ -88,11 +88,11 @@ public class Concurrency
     static void Main(string[] args)
     {
         Concurrency c = new();
-        c.AddToOneBillionConcurrently(); //Time elapsed: 00:00:00.3327248   Total sum: 503000000500000000
+        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
 
-        //c.AddToTenMillion(1, OneHundredMillion); // Time elapsed: 00:00:00.0147405
+        //c.AddToOneHundredMillion(1, OneHundredMillion); // Time elapsed: 00:00:00.2667141
 
-        //c.SumToOneBillion(); //Time elapsed: 00:00:01.7290499   Total Sum: 500000000500000000
+        //c.SumToTenBillion(); // Time elapsed: 00:00:27.3592470   Total Sum: 5.000000000006786E+19
 
     } // end Main
 } // end class
