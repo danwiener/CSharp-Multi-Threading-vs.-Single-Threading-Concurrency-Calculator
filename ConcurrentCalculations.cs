@@ -27,11 +27,13 @@ public class Concurrency
             int index = (int)i;
             taskList[index] = new Thread(() => AddToOneHundredMillion(start, end));
             taskList[index].Name = $"Thread({index})";
+
+            // guarantee that thread is starting
             Task task = Task.Factory.StartNew(() => taskList[index].Start());
             task.Wait();
 
-            start += OneHundredMillion; // add 10 million
-            end += OneHundredMillion; // add 10 million
+            start += OneHundredMillion; // add 100 million
+            end += OneHundredMillion; // add 100 million
         }
         // Wait for tasks to finish running before stopping the stopwatch. 
         foreach (Thread t in taskList)
@@ -40,25 +42,25 @@ public class Concurrency
         }
         sw.Stop();
 
-        //_sum = results.Sum();
         ConcurrentTimeElapsed += sw.Elapsed;
-
         Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
-        Console.WriteLine("Total sum: " + _sum);
+        Console.WriteLine("Total sum: " + this._sum);
     } // end method
+
     // This method will add the sum of each number from 0 to 100 million
     private object myLock = new object();
     public void AddToOneHundredMillion(double start, double end)
     {
         double sum = 0;
-        Stopwatch sw = Stopwatch.StartNew();
+        //Stopwatch sw = Stopwatch.StartNew();
         for (double i = start; i <= end; i++)
         {
             sum += i;
         }
-        sw.Stop();
-        ConcurrentTimeElapsed += sw.Elapsed;
-        Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
+
+        //sw.Stop();
+        //ConcurrentTimeElapsed += sw.Elapsed;
+        //Console.WriteLine("Time elapsed: " + ConcurrentTimeElapsed);
 
         lock (myLock)
         {
@@ -88,7 +90,7 @@ public class Concurrency
     static void Main(string[] args)
     {
         Concurrency c = new();
-        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
+        c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
 
         //c.AddToOneHundredMillion(1, OneHundredMillion); // Time elapsed: 00:00:00.2667141
 
