@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Numerics;
+
 //Created by Henrik Wiener : 11/3/2023
 public class Concurrency
 {
@@ -90,11 +88,11 @@ public class Concurrency
     static void Main(string[] args)
     {
         Concurrency c = new();
-        //c.AddToTenBillionConcurrently(); //Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
+        //c.AddToTenBillionConcurrently(); // Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
 
         //c.AddToOneHundredMillion(1, OneHundredMillion); // Time elapsed: 00:00:00.2667141
 
-        //c.SumToTenBillion(); //Time elapsed: 00:00:27.3592470   Total Sum: 5.000000000006786E+19
+        //c.SumToTenBillion(); // Time elapsed: 00:00:27.3592470   Total Sum: 5.000000000006786E+19
 
     } // end Main
 } // end class
