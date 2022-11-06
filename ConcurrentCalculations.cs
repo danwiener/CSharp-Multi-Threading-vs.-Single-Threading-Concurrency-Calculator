@@ -30,7 +30,7 @@ public class Concurrency
             taskList[index] = new Thread(() => AddToOneHundredMillion(start, end));
             taskList[index].Name = $"Thread({index})";
 
-            // Ensure that thread is starting
+            // Ensure that thread starts
             Task task = Task.Factory.StartNew(() => taskList[index].Start());
             task.Wait();
 
