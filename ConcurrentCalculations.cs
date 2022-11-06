@@ -11,6 +11,7 @@ public class Concurrency
 
     private object myLock = new object(); // for locking _sum
 
+    // Time property
     public TimeSpan ConcurrentTimeElapsed { get; set; }
 
     // This method will concurrently run 100 threads each summing 100 million numbers up to 10 billion
@@ -24,11 +25,15 @@ public class Concurrency
         Stopwatch sw = Stopwatch.StartNew();
 
         // Sum in increments of 100 million 100 times concurrently up to 10 billion
-        for (double i = 0; i < 100; i++)
+        for (int i = 0; i < 100; i++)
         {
-            int index = (int)i;
+            int index = i;
             taskList[index] = new Thread(() => AddToOneHundredMillion(start, end));
-            taskList[index].Name = $"Thread({index})";
+            taskList[index].Name = $"Thread({index})"; // Name thread
+
+            // Optional parameterized Thread constructor:
+            //taskList[index] = new Thread((begin) => AddToOneHundredMillion(start:(double)begin, end:(start + OneHundredMillion) - 1));
+            //taskList[index].Start(start);
 
             // Ensure that thread starts before continuation of program
             Task task = Task.Factory.StartNew(() => taskList[index].Start());
