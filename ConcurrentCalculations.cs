@@ -9,6 +9,8 @@ public class Concurrency
 
     private double _sum; // sum of values
 
+    private object myLock = new object(); // for locking _sum
+
     public TimeSpan ConcurrentTimeElapsed { get; set; }
 
     // This method will concurrently run 100 threads each summing 100 million numbers up to 10 billion
@@ -28,14 +30,14 @@ public class Concurrency
             taskList[index] = new Thread(() => AddToOneHundredMillion(start, end));
             taskList[index].Name = $"Thread({index})";
 
-            // guarantee that thread is starting
+            // Ensure that thread is starting
             Task task = Task.Factory.StartNew(() => taskList[index].Start());
             task.Wait();
 
             start += OneHundredMillion; // add 100 million
             end += OneHundredMillion; // add 100 million
         }
-        // Wait for tasks to finish running before stopping the stopwatch. 
+        // Wait for collection of tasks to finish running before stopping the stopwatch. 
         foreach (Thread t in taskList)
         {
             t.Join();
@@ -48,7 +50,6 @@ public class Concurrency
     } // end method
 
     // This method will add the sum of each number from 0 to 100 million
-    private object myLock = new object();
     public void AddToOneHundredMillion(double start, double end)
     {
         double sum = 0;
@@ -79,7 +80,6 @@ public class Concurrency
         {
             sum += i;
         }
-
         sw.Stop();
 
         ConcurrentTimeElapsed += sw.Elapsed;
