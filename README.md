@@ -19,3 +19,4 @@ Results:
 
 //Time elapsed: 00:00:04.2092471   Total sum: 5.000000000026831E+19
 
+NOTE: My computer only has 8 physical threads, but there was no discernable difference in execution time between running this method with 8 threads or 100 threads. I surmise 100 threads didn't involve enough thread switching to noticably slow down execution of this app.
