@@ -1,4 +1,4 @@
-# ConcurrentCalculations
+# C# Multi-Threading vs. Single-Threading Concurrency Calculator
 
 This application makes use of the asynchronous built-in .NET class Task to evaluate calculation time using concurrency/asyncrhonisity. 
 
